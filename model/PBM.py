@@ -4,13 +4,14 @@ from torch.autograd import Variable
 import torch.nn as nn
 import torch.nn.functional as F
 
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 class BinarizedF(Function):
   @staticmethod
   def forward(ctx, input, threshold):
     ctx.save_for_backward(input,threshold)
-    a = torch.ones_like(input).cuda()
-    b = torch.zeros_like(input).cuda()
+    a = torch.ones_like(input).to(device)
+    b = torch.zeros_like(input).to(device)
     output = torch.where(input>=threshold,a,b)
     return output
 
@@ -94,26 +95,26 @@ if __name__ == '__main__':
     import  os
 
     # os.environ["CUDA_VISIBLE_DEVICES"] = '2'
-    model = BinarizedModule().cuda()
-    model0 = CNN().cuda()
+    model = BinarizedModule().to(device)
+    model0 = CNN().to(device)
     optimizer = optim.SGD(model.parameters(),lr=0.5)
     optimizer0 = optim.SGD(model0.parameters(), lr=0.05)
 
-    loss_module =  nn.MSELoss().cuda()
+    loss_module =  nn.MSELoss().to(device)
 
     # input = Variable(torch.randn(1,3,4), requires_grad=True)
     pred = torch.Tensor([[
         [[0.5, 0.7, 0.6, 0.4],
          [0.5, 0.3, 0.3, 0.6],
          [0.2, 0.03, 0, 0.2],
-         [0.3, 0.1, 0.2, 0.01]]]]).cuda()
+         [0.3, 0.1, 0.2, 0.01]]]]).to(device)
 
     gt = torch.Tensor([[
         [[1, 1, 1, 1],
          [1, 1, 1, 1],
          [0, 0, 0, 0],
-         [0, 0, 0, 0]]]]).cuda()
-    input = Variable(pred, requires_grad=True).cuda()
+         [0, 0, 0, 0]]]]).to(device)
+    input = Variable(pred, requires_grad=True).to(device)
 
     print('input',input)
     print('gt',gt)

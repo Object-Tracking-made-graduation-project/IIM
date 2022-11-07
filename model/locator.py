@@ -7,6 +7,7 @@ import numpy as np
 from model.PBM import BinarizedModule
 from torchvision import models
 
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 class Crowd_locator(nn.Module):
     def __init__(self, net_name, gpu_id, pretrained=True):
@@ -20,13 +21,13 @@ class Crowd_locator(nn.Module):
             self.Binar = BinarizedModule(input_channels=768)
 
         if len(gpu_id) > 1:
-            self.Extractor = torch.nn.DataParallel(self.Extractor).cuda()
-            self.Binar = torch.nn.DataParallel(self.Binar).cuda()
+            self.Extractor = torch.nn.DataParallel(self.Extractor).to(device)
+            self.Binar = torch.nn.DataParallel(self.Binar).to(device)
         else:
-            self.Extractor = self.Extractor.cuda()
-            self.Binar = self.Binar.cuda()
+            self.Extractor = self.Extractor.to(device)
+            self.Binar = self.Binar.to(device)
 
-        self.loss_BCE = nn.BCELoss().cuda()
+        self.loss_BCE = nn.BCELoss().to(device)
 
     @property
     def loss(self):
@@ -39,8 +40,6 @@ class Crowd_locator(nn.Module):
         threshold_matrix, binar_map = self.Binar(feature,pre_map)
 
         if mode == 'train':
-        # weight = torch.ones_like(binar_map).cuda()
-        # weight[mask_gt==1] = 2
             assert pre_map.size(2) == mask_gt.size(2)
             self.binar_map_loss = (torch.abs(binar_map-mask_gt)).mean()
 
@@ -69,7 +68,7 @@ if __name__ == '__main__':
     # target = torch.ones(2,100)
     # loss = F.binary_cross_entropy(input,target)
     # print(loss)
-    model = Res_FPN(pretrained = False).cuda()
+    model = Res_FPN(pretrained = False).to(device)
     summary(model,(3,24,24))
 
     # import torch
