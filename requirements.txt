@@ -11,6 +11,8 @@ scipy
 opencv-python
 pyyaml
 yacs
+flask
+pafy
 
 # numpy
 # torch>=1.7
