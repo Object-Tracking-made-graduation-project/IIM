@@ -1,22 +1,25 @@
 # TODO: Update with exact module version
-torch
-torchvision
-tensorboardX
-tensorboard
-tensorflow
-easydict
+# torch
+# torchvision
+# tensorboardX
+# tensorboard
+# tensorflow
 pandas
 numpy
 scipy
-opencv-python
+opencv-python-headless==4.5.2.52
+opencv-python==4.5.2.52
 pyyaml
 yacs
 flask
 pafy
+imutils
+youtube_dl
+easydict
 
 # numpy
 # torch>=1.7
-opencv_python
+# opencv_python
 loguru
 scikit-image
 tqdm
@@ -26,7 +29,7 @@ thop
 ninja
 tabulate
 # tensorboard
-lap
+# lap
 motmetrics
 filterpy
 h5py

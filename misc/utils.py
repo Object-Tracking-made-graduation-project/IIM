@@ -14,6 +14,9 @@ from torch import nn
 import torchvision.utils as vutils
 import torchvision.transforms as standard_transforms
 
+from model.locator import Crowd_locator
+
+
 def read_pred_and_gt(pred_file,gt_file):
     # read pred
     pred_data = {}
@@ -352,3 +355,6 @@ class Timer(object):
             return self.average_time
         else:
             return self.diff
+
+
+

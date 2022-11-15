@@ -42,7 +42,7 @@ def get_boxInfo_from_Binar_map(binar_numpy, min_area=3):
     return points
 
 
-def get_points_on_image(img_raw, model, device):
+def get_points_on_image(img_raw, model, device=None):
     if isinstance(img_raw, PIL.Image.Image):
         return get_points_on_pil_image(img_raw, model, device)
     elif isinstance(img_raw, np.ndarray):
@@ -68,7 +68,7 @@ def get_points_on_np_image(img: np.ndarray,  net, device) -> np.array:
     return points
 
 
-def get_points_on_tensor(img: torch.Tensor, model, device=None):
+def get_points_on_tensor(img: torch.Tensor, net, device=None):
     if not device:
         device = default_device
 

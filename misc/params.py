@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-model_path = r'./FDST-HR-ep_177_F1_0.969_Pre_0.984_Rec_0.955_mae_1.0_mse_1.5.pth'
+model_path = r'./FDST-HR.pth'
 
 
 @dataclass()
