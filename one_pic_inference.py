@@ -12,17 +12,16 @@ import  cv2
 from collections import OrderedDict
 from datetime import datetime
 
-
-
-#GPU_ID = '2,3'
 GPU_ID = '0'
 
 os.environ["CUDA_VISIBLE_DEVICES"] = GPU_ID
 
 torch.backends.cudnn.benchmark = True
-netName = 'HR_Net' # options: HR_Net,VGG16_FPN
+netName = 'HR_Net'  # options: HR_Net,VGG16_FPN
 model_path = './FDST-HR-ep_177_F1_0.969_Pre_0.984_Rec_0.955_mae_1.0_mse_1.5.pth'
+image_file = "./figures/IMG_3.jpg"
 
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 
 mean_std = ([0.452016860247, 0.447249650955, 0.431981861591], [0.23242045939, 0.224925786257, 0.221840232611])  
@@ -43,8 +42,9 @@ restore = standard_transforms.Compose([
 def main():
 
     net = create_model(model_path)
+    print("Model loaded")
 
-    img = Image.open("./frames/images/60.jpg")
+    img = Image.open(image_file)
 
     start_time = datetime.now()
 
@@ -79,8 +79,8 @@ def get_boxInfo_from_Binar_map(Binar_numpy, min_area=3):
 def create_model(model_path):
     
     net = Crowd_locator(netName,GPU_ID,pretrained=True)
-    net.cuda()
-    state_dict = torch.load(model_path)
+    net.to(device)
+    state_dict = torch.load(model_path, map_location=device)
     if len(GPU_ID.split(','))>1:
         net.load_state_dict(state_dict)
     else:
@@ -105,7 +105,7 @@ def predict_people_in_frame(img, net): # file_list -> file_path
     slice_h, slice_w = slice_h, slice_w
 
     with torch.no_grad():
-        img = Variable(img).cuda()
+        img = Variable(img).to(device)
         b, c, h, w = img.shape
         crop_imgs, crop_dots, crop_masks = [], [], []
         if h * w < slice_h * 2 * slice_w * 2 and h % 16 == 0 and w % 16 == 0:

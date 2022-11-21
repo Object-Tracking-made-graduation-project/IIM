@@ -1,12 +1,42 @@
-torch
-torchvision
-tensorboardX
-tensorboard
-tensorflow
-easydict
+# TODO: Update with exact module version
+# torch
+# torchvision
+# tensorboardX
+# tensorboard
+# tensorflow
 pandas
 numpy
 scipy
-opencv-python
+opencv-python-headless==4.5.2.52
+opencv-python==4.5.2.52
 pyyaml
 yacs
+flask
+pafy
+imutils
+youtube_dl
+easydict
+
+# numpy
+# torch>=1.7
+# opencv_python
+loguru
+scikit-image
+tqdm
+# torchvision>=0.10.0
+Pillow
+thop
+ninja
+tabulate
+# tensorboard
+# lap
+motmetrics
+filterpy
+h5py
+
+# verified versions
+# onnx==1.8.1
+# onnxruntime==1.8.0
+# onnx-simplifier==0.3.5
+
+jupyter
